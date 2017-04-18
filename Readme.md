@@ -1,7 +1,7 @@
-# Личный проект «YetiCave» 
+# Личный проект «YetiCave»
 
-* Студент: [Pavel Pavlov](https://up.htmlacademy.ru/php/1/user/52805).
-* Наставник: `Неизвестно`.
+* Студент: [Elena Pavlova](https://htmlacademy.ru/profile/e_pavlova).
+* Наставник: [Pavel Pavlov](https://up.htmlacademy.ru/php/1/user/52805).
 
 ---
 
