@@ -25,15 +25,15 @@ function time_format($time_input)
     if ( $time_diff > (24 * 60 * 60 )) {
         return gmdate("d.m.Y", $time_diff) . ' в ' . gmdate("H:i", $time_diff);
     } elseif ($time_diff > 60 * 60 ) {
-        return gmdate("H", $time_diff) . ' ' . time_text($time_diff, 'hours');
+        return time_text($time_diff, 'hours');
     } else {
-        return gmdate("i", $time_diff) . ' ' . time_text($time_diff, 'minutes');
+        return time_text($time_diff, 'minutes');
     }
 }
 
 // $time {int} - Время в секундах
 // $base_text {string} 'hours' || 'minutes' ключи массива $out_text
-// Возвращает текст к числительному с правильным склонением огласно массиву $out_text
+// Возвращает время в часах и минутах огласно массиву $out_text
 function time_text($time, $base_text) {
     $out_text = array(
         'hours' => ['час', 'часа', 'часов'],
@@ -58,7 +58,7 @@ function time_text($time, $base_text) {
     } else {
         $index = 2;
     }
-    return $out_text[$base_text][$index];
+    return $time . ' ' . $out_text[$base_text][$index] . ' назад';
 }
 
 ?>
