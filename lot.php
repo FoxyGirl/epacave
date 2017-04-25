@@ -8,6 +8,59 @@ $bets = [
     ['name' => 'Семён', 'price' => 10000, 'ts' => strtotime('last week')]
 ];
 
+//функция форматирования времени
+// $time_input - время в формате временной метки
+// $time_output - время в относительном формате
+// 1. Если переданное дата/время старше 24 часов от текущего времени, то вернуть дату/время в формате «дд.мм.гг в чч.мм».
+// Например: «19.03.17 в 08:21»
+// 2. Если с переданного даты/времени прошло меньше 24 часов, то вернуть дату/время в относительном формате
+// по следующим правилам:
+// o	если меньше часа, то результат будет в формате «{кол-во минут} минут назад»
+// o	«часов» в зависимости от числа можно не обращать внимания.
+function time_format($time_input)
+{
+    $now = time();
+    $time_diff = $now - $time_input;
+
+    if ( $time_diff > (24 * 60 * 60 )) {
+        return gmdate("d.m.Y", $time_diff) . ' в ' . gmdate("H:i", $time_diff);
+    } elseif ($time_diff > 60 * 60 ) {
+        return gmdate("H", $time_diff) . ' ' . time_text($time_diff, 'hours');
+    } else {
+        return gmdate("i", $time_diff) . ' ' . time_text($time_diff, 'minutes');
+    }
+}
+
+// $time {int} - Время в секундах
+// $base_text {string} 'hours' || 'minutes' ключи массива $out_text
+// Возвращает текст к числительному с правильным склонением огласно массиву $out_text
+function time_text($time, $base_text) {
+    $out_text = array(
+        'hours' => ['час', 'часа', 'часов'],
+        'minutes' => ['минуту', 'минуты', 'минут']
+    );
+
+    switch ($base_text):
+        case 'hours' :
+            $time = floor($time / (60 * 60));
+            break;
+        case 'minutes' :
+            $time = floor($time / 60);
+            break;
+    endswitch;
+
+    if (($time >= 11) && ($time <= 14)) {
+        $index = 2;
+    } elseif ($time%10 == 1) {
+        $index = 0;
+    } elseif (($time%10 >= 2) && ($time%10 <=4)) {
+        $index = 1;
+    } else {
+        $index = 2;
+    }
+    return $out_text[$base_text][$index];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -112,26 +165,13 @@ $bets = [
                     <h3>История ставок (<span>4</span>)</h3>
                     <!-- заполните эту таблицу данными из массива $bets-->
                     <table class="history__list">
-                        <tr class="history__item">
-                            <td class="history__name">Иван</td>
-                            <td class="history__price"> р</td>
-                            <td class="history__time"></td>
-                        </tr>
-                        <tr class="history__item">
-                            <td class="history__name">Константин</td>
-                            <td class="history__price"> р</td>
-                            <td class="history__time"></td>
-                        </tr>
-                        <tr class="history__item">
-                            <td class="history__name">Евгений</td>
-                            <td class="history__price"> р</td>
-                            <td class="history__time"></td>
-                        </tr>
-                        <tr class="history__item">
-                            <td class="history__name">Семён</td>
-                            <td class="history__price"> р</td>
-                            <td class="history__time"></td>
-                        </tr>
+                        <?php foreach($bets as $bet) : ?>
+                            <tr class="history__item">
+                                <td class="history__name"><?= $bet['name']?></td>
+                                <td class="history__price"><?= $bet['price']?> р</td>
+                                <td class="history__time"><?= time_format($bet['ts'])?></td>
+                            </tr>
+                        <?php endforeach; ?>
                     </table>
                 </div>
             </div>
