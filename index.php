@@ -89,7 +89,7 @@ $main_data = [
 <!--  -->
 
 <!-- Footer -->
-    <?=includeTemplate('templates/footer.php', ['name' => '<h1>Палки</h1>']); ?>
+    <?=includeTemplate('templates/footer.php', []); ?>
 <!--  -->
 
 </body>
