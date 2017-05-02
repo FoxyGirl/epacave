@@ -3,8 +3,9 @@ require_once 'functions.php';
 require_once 'data.php';
 
 $id_lot = $_GET['id'];
+$is_id_valid = is_numeric($id_lot) && array_key_exists($id_lot, $lots);
 
-if ( $id_lot  > (count($lots) - 1)) {
+if ( !$is_id_valid ) {
     header("HTTP/1.1 404 Not Found");
     exit('404 Page not found');
 }
