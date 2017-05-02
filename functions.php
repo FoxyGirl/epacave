@@ -7,9 +7,10 @@
  */
 
 // Функция включения шаблонов
-// $templ {string} путь к файлу шаблона
+// $templ {string} название файла шаблона, лежащего в папке 'templates/'
 // $datas {Array} - массив данных, предназначенных для использования в шаблоне
 function includeTemplate($templ, $datas = []) {
+    $templ = 'templates/' . $templ;
     if (!file_exists($templ)) {
         return "";
     } else {
@@ -28,24 +29,6 @@ function includeTemplate($templ, $datas = []) {
 function protect(&$data) {
     $data = strip_tags($data);
     $data = htmlspecialchars($data);
-}
-
-/*Функция  protectXSS() проверяет, является ли аргумент строкой. Если яволяется, то пропускает эту строку через функцию
-  strip_tags(), которая заменяет символы тегов на мнимоники(спецсимволы). Если аргумент является массивом, то
-  через рекурсию доходит до уровня строки и тогда для изменения строки использует фунцию strip_tags().*/
-function protectXSS($data)
-{
-    if (is_array($data)) {
-        foreach ($data as &$value) {
-            $value = protectXSS($value);
-        }
-        return $data;
-    } else {
-        return strip_tags($data);
-    }
-
-    unset($value);
-
 }
 
 // Функция форматирования времени
