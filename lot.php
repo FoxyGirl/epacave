@@ -4,6 +4,11 @@ require_once 'data.php';
 
 $id_lot = $_GET['id'];
 
+if ( $id_lot  > (count($lots) - 1)) {
+    header("HTTP/1.1 404 Not Found");
+    exit('404 Page not found');
+}
+
 $main_data = [
     'bets' => $bets,
     'id_lot' => $id_lot,
