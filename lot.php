@@ -1,18 +1,19 @@
 <?php
 require_once 'functions.php';
+require_once 'data.php';
 
-// ставки пользователей, которыми надо заполнить таблицу
-$bets = [
-    ['name' => 'Иван', 'price' => 11500, 'ts' => strtotime('-' . rand(1, 50) . ' minute')],
-    ['name' => 'Константин', 'price' => 11000, 'ts' => strtotime('-' . rand(1, 18) . ' hour')],
-    ['name' => 'Евгений', 'price' => 10500, 'ts' => strtotime('-' . rand(25, 50) . ' hour')],
-    ['name' => 'Семён', 'price' => 10000, 'ts' => strtotime('last week')]
-];
+$id_lot = $_GET['id'];
+$is_id_valid = is_numeric($id_lot) && array_key_exists($id_lot, $lots);
 
-
+if ( !$is_id_valid ) {
+    header("HTTP/1.1 404 Not Found");
+    exit('404 Page not found');
+}
 
 $main_data = [
-    'bets' => $bets
+    'bets' => $bets,
+    'id_lot' => $id_lot,
+    'lots' => $lots
 ];
 
 ?>
@@ -21,7 +22,7 @@ $main_data = [
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>DC Ply Mens 2016/2017 Snowboard</title>
+    <title><?= $lots[$id_lot]['name'] ?></title>
     <link href="css/normalize.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 </head>

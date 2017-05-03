@@ -15,7 +15,7 @@ function includeTemplate($templ, $datas = []) {
         return "";
     } else {
         if (!empty($datas)) {
-            array_walk_recursive($datas, 'protect');
+            array_walk_recursive($datas, 'protectXSS');
             extract($datas);        //импортируются переменные из массива
         }
         ob_start();                 //включается буферизация
@@ -26,7 +26,7 @@ function includeTemplate($templ, $datas = []) {
 
 // Функция для защиты XSS
 // $data {Array} - массив данных, предназначенных для очистки
-function protect(&$data) {
+function protectXSS(&$data) {
     $data = strip_tags($data);
     $data = htmlspecialchars($data);
 }
