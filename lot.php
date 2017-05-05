@@ -29,15 +29,15 @@ $main_data = [
 <body>
 
 <!-- Header -->
-<?=includeTemplate('header.php', []); ?>
+<?=includeTemplate('tmpl-header.php', []); ?>
 <!--  -->
 
 <!-- Main -->
-<?=includeTemplate('main-lot.php', $main_data); ?>
+<?=includeTemplate('tmpl-main-lot.php', $main_data); ?>
 <!--  -->
 
 <!-- Footer -->
-<?=includeTemplate('footer.php', []); ?>
+<?=includeTemplate('tmpl-footer.php', $footer_data); ?>
 <!--  -->
 
 </body>
