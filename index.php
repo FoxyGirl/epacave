@@ -17,6 +17,8 @@ $now = time();
 // далее нужно вычислить оставшееся время до начала следующих суток и записать его в переменную $lot_time_remaining
 $lot_time_remaining = gmdate("H:i", ($tomorrow - $now));
 
+
+
 $main_data = [
     'equipment_types' =>  $equipment_types,
     'lots' => $lots,
@@ -34,15 +36,15 @@ $main_data = [
 <body>
 
 <!-- Header -->
-<?=includeTemplate('header.php', []); ?>
+<?=includeTemplate('tmpl-header.php', []); ?>
 <!--  -->
 
 <!-- Main -->
-<?=includeTemplate('main.php', $main_data); ?>
+<?=includeTemplate('tmpl-main.php', $main_data); ?>
 <!--  -->
 
 <!-- Footer -->
-    <?=includeTemplate('footer.php', []); ?>
+    <?=includeTemplate('tmpl-footer.php', $footer_data); ?>
 <!--  -->
 
 </body>

@@ -62,4 +62,9 @@ $bets = [
     ['name' => 'Семён', 'price' => 10000, 'ts' => strtotime('last week')]
 ];
 
+$footer_data = [
+    'equipment_types' => $equipment_types
+];
+
+
 ?>
