@@ -66,4 +66,5 @@ $footer_data = [
     'equipment_types' => $equipment_types
 ];
 
+
 ?>

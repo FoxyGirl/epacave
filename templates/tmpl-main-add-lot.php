@@ -21,7 +21,8 @@
             </li>
         </ul>
     </nav>
-    <form class="form form--add-lot container <?= $form_validate['form_valid'] ?>" action="add.php" method="post"> <!-- form--invalid -->
+    <form class="form form--add-lot container <?= $form_validate['form_valid'] ?>"
+          action="add.php" method="post" enctype="multipart/form-data" name="add_form"> <!-- form--invalid -->
         <h2>Добавление лота</h2>
         <div class="form__container-two">
             <div class="form__item  <?= $form_validate['lot-name']['error_class']?>"> <!-- form__item--invalid -->
@@ -61,6 +62,7 @@
                        value="<?= $form_validate['photo2']['value']?>">
                 <label for="photo2">
                     <span>+ Добавить</span>
+                    <?= $form_validate['file_error'] ?>
                 </label>
             </div>
         </div>

@@ -8,16 +8,45 @@
 require_once 'functions.php';
 require_once 'data.php';
 
-$form_valid = 'form--invalid';
+$form_valid = '';
 $form_validate = [];
+$form_validate['file_error'] = '';
+
+$upload_img_file_types = [
+    'image/jpeg',
+    'image/jpg',
+    'image/png'
+];
 
 if (isset($_POST)) {
-
     array_walk($_POST, 'check_input');
-
-    $form_valid = 'valid';
-
     array_walk($_POST, 'check_form');
+}
+
+if (isset($_FILES['photo2']) && $_FILES['photo2']['name'] != '') {
+    $file = $_FILES['photo2'];
+    $upload_dir = 'img/';
+    $name_file = basename($file['name']);
+
+//    print("Загружен файл с именем " . $file['name'] . " и размером " . $file['size'] . " байт и с типом " . $file['type']
+//        . ", а также временным именем " . $file['tmp_name'] . " и базовым именем " . $name_file);
+//    print('Ошибка файла = ' . $form_validate['file_error']);
+
+    if ($file['error'] == UPLOAD_ERR_OK && is_uploaded_file($file['tmp_name'])) {
+        if (in_array($file['type'], $upload_img_file_types)) {
+            $tmp_name = $file['tmp_name'];
+            $name_file = $upload_dir . basename($file['name']);
+            move_uploaded_file($tmp_name, $name_file);
+            $url_img = $name_file;
+        } else {
+            $form_validate['file_error'] = 'Допускается загрузка только jpeg, jpg и png';
+        }
+
+    } else {
+        $form_validate['file_error'] = 'Код ошибки загрузки файла ' . $file['error'];
+    }
+
+
 }
 
 function check_input(&$data, $key) {
@@ -29,7 +58,7 @@ function check_input(&$data, $key) {
 
 function check_form(&$data, $key)
 {
-    global $form_validate;
+//    global $form_validate;
     $error_class = 'form__item--invalid';
     $error_message = 'Заполните это поле';
     $error_message_num = 'Заполните это поле числом больше нуля';
@@ -41,9 +70,6 @@ function check_form(&$data, $key)
             } else {
                 dataRight($data, $key);
             }
-            break;
-        case 'photo2':
-            dataRight($data, $key);
             break;
         case 'lot-rate':
         case 'lot-step':
@@ -91,31 +117,14 @@ $form_data = [
     'equipment_types' => $equipment_types
 ];
 
-if ($form_data['form_valid'] == 'valid') {
-    $lot = [
+if ($form_data['form_valid'] == '') {
+    $lots[] = [
         "name" => $_POST['lot-name'],
         "category" => $_POST['category'],
         "price" => $_POST['lot-rate'],
-        "url_img" => $_POST['photo2'],
-        "description" => $_POST['message']
+        "url_img" => $url_img
     ];
-    $lot_new = [
-        [
-        "name" => $_POST['lot-name'],
-        "category" => $_POST['category'],
-        "price" => $_POST['lot-rate'],
-        "url_img" => $_POST['photo2']
-        ]
-    ];
-
 }
-
-$lots[] = [
-    "name" => $_POST['lot-name'],
-    "category" => $_POST['category'],
-    "price" => $_POST['lot-rate'],
-    "url_img" => $_POST['photo2']
-];
 
 $lot_data = [
     'bets' => $bets,
