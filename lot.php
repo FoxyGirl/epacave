@@ -13,7 +13,8 @@ if ( !$is_id_valid ) {
 $main_data = [
     'bets' => $bets,
     'id_lot' => $id_lot,
-    'lots' => $lots
+    'lots' => $lots,
+    'categories' => $categories
 ];
 
 ?>

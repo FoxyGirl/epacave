@@ -28,8 +28,8 @@
             <h2>Открытые лоты</h2>
             <select class="lots__select">
                 <option>Все категории</option>
-                <?php foreach($equipment_types as $equipment_type): ?>
-                    <option><?= $equipment_type ?></option>
+                <?php foreach($categories as $category): ?>
+                    <option><?= $category ?></option>
                 <?php endforeach; ?>
             </select>
         </div>

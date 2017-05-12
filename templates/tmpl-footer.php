@@ -1,13 +1,7 @@
 <footer class="main-footer">
-    <nav class="nav">
-        <ul class="nav__list container">
-            <?php foreach($equipment_types as $equipment_type): ?>
-            <li class="nav__item">
-                <a href="all-lots.html"><?= $equipment_type ?></a>
-            </li>
-            <? endforeach; ?>
-        </ul>
-    </nav>
+    <!-- Navigation -->
+    <?= includeTemplate('tmpl-nav.php', ['categories' => $categories]); ?>
+    <!--  -->
     <div class="main-footer__bottom container">
         <div class="main-footer__copyright">
             <p>© 2017, YetiCave</p>

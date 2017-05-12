@@ -31,6 +31,63 @@ function protectXSS(&$data) {
     $data = htmlspecialchars($data);
 }
 
+// Функция для обработки вводимых данных
+function check_input(&$data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+//    print($key . ' ' . $data . '<br>');
+}
+
+// Функция для проверки формы add-lot
+function check_form(&$data, $key)
+{
+    global $form_validate;
+    $error_class = 'form__item--invalid';
+    $error_message = 'Заполните это поле';
+    $error_message_num = 'Заполните это поле числом больше нуля';
+
+    switch ($key) {
+        case 'category':
+            if ($data == 'Выберите категорию') {
+                $form_validate[$key] = dataForm($data, $error_class, $error_message);
+            } else {
+                $form_validate[$key] = dataForm($data);
+            }
+            break;
+        case 'lot-rate':
+        case 'lot-step':
+            if (!is_numeric($data) || +$data <= 0) {
+                $data = '';
+                $form_validate[$key] = dataForm($data, $error_class, $error_message_num);
+            } else {
+                $form_validate[$key] = dataForm($data);
+            }
+            break;
+        default:
+            if (empty($data)) {
+                $form_validate[$key] = dataForm($data, $error_class, $error_message);
+            } else {
+                $form_validate[$key] = dataForm($data);
+            }
+    }
+
+//    print($key . ' ' . $form_validate[$key]['value'] . ' /  ' . $form_validate[$key]['error_class'] . ' /  ' . $form_validate[$key]['error_message'] . '<br>');
+}
+
+// Функция для заполнения массива $form_valid об ошибках
+function dataForm($data = '', $error_class = '', $error_message = '') {
+    global $form_valid;
+    if ($error_class != '' ) {
+        $form_valid = 'form--invalid';
+    }
+    return [
+        'value' => $data,
+        'error_class' => $error_class,
+        'error_message' => $error_message
+    ];
+}
+
 // Функция форматирования времени
 // $time_input - время в формате временной метки
 // 1. Если переданное дата/время старше 24 часов от текущего времени, то вернуть дату/время в формате «дд.мм.гг в чч.мм».

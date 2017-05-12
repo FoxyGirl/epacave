@@ -12,12 +12,6 @@ $form_valid = '';
 $form_validate = [];
 $form_validate['file_error'] = '';
 
-$upload_img_file_types = [
-    'image/jpeg',
-    'image/jpg',
-    'image/png'
-];
-
 if (isset($_POST)) {
     array_walk($_POST, 'check_input');
     array_walk($_POST, 'check_form');
@@ -45,76 +39,12 @@ if (isset($_FILES['photo2']) && $_FILES['photo2']['name'] != '') {
     } else {
         $form_validate['file_error'] = 'Код ошибки загрузки файла ' . $file['error'];
     }
-
-
-}
-
-function check_input(&$data, $key) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-//    print($key . ' ' . $data . '<br>');
-}
-
-function check_form(&$data, $key)
-{
-//    global $form_validate;
-    $error_class = 'form__item--invalid';
-    $error_message = 'Заполните это поле';
-    $error_message_num = 'Заполните это поле числом больше нуля';
-
-    switch ($key) {
-        case 'category':
-            if ($data == 'Выберите категорию') {
-                dataError($data, $key, $error_class, $error_message);
-            } else {
-                dataRight($data, $key);
-            }
-            break;
-        case 'lot-rate':
-        case 'lot-step':
-            if (!is_numeric($data) || +$data <= 0) {
-                $data = '';
-                dataError($data, $key, $error_class, $error_message_num);
-            } else {
-                dataRight($data, $key);
-            }
-            break;
-        default:
-            if (empty($data)) {
-                dataError($data, $key, $error_class, $error_message);
-            } else {
-                dataRight($data, $key);
-            }
-    }
-
-//    print($key . ' ' . $form_validate[$key]['value'] . ' /  ' . $form_validate[$key]['error_class'] . ' /  ' . $form_validate[$key]['error_message'] . '<br>');
-}
-
-
-function dataRight($data = '', $key) {
-    global $form_validate;
-    $form_validate[$key] = [
-        'value' => $data,
-        'error_class' => '',
-        'error_message' => ''
-    ];
-}
-
-function dataError($data = '', $key, $error_class, $error_message) {
-    global $form_validate, $form_valid;
-    $form_valid = 'form--invalid';
-    $form_validate[$key] = [
-        'value' => $data,
-        'error_class' => $error_class,
-        'error_message' => $error_message
-    ];
 }
 
 $form_data = [
     'form_valid' => $form_valid,
     'form_validate' => $form_validate,
-    'equipment_types' => $equipment_types
+    'categories' => $categories
 ];
 
 if ($form_data['form_valid'] == '') {
@@ -129,7 +59,8 @@ if ($form_data['form_valid'] == '') {
 $lot_data = [
     'bets' => $bets,
     'id_lot' => 6,
-    'lots' => $lots
+    'lots' => $lots,
+    'categories' => $categories
 ];
 
 ?>

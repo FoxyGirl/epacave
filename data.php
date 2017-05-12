@@ -45,7 +45,7 @@ $lots = [
     ]
 ];
 
-$equipment_types = [
+$categories = [
     "Доски и лыжи",
     "Крепления",
     "Ботинки",
@@ -63,8 +63,13 @@ $bets = [
 ];
 
 $footer_data = [
-    'equipment_types' => $equipment_types
+    'categories' => $categories
 ];
 
+$upload_img_file_types = [
+    'image/jpeg',
+    'image/jpg',
+    'image/png'
+];
 
 ?>

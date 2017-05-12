@@ -20,7 +20,7 @@ $lot_time_remaining = gmdate("H:i", ($tomorrow - $now));
 
 
 $main_data = [
-    'equipment_types' =>  $equipment_types,
+    'categories' =>  $categories,
     'lots' => $lots,
     'lot_time_remaining' => $lot_time_remaining
 ];
