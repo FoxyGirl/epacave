@@ -32,7 +32,7 @@ function protectXSS(&$data) {
 }
 
 // Функция для обработки вводимых данных
-function check_input(&$data) {
+function check_input(&$data, $key) {
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
@@ -45,9 +45,20 @@ function check_form(&$data, $key)
     global $form_validate;
     $error_class = 'form__item--invalid';
     $error_message = 'Заполните это поле';
+    $error_message_email = 'Введите e-mail';
+    $error_message_not_email = 'Введите правильный e-mail';
     $error_message_num = 'Заполните это поле числом больше нуля';
 
     switch ($key) {
+        case 'email':
+            if (empty($data)) {
+                $form_validate[$key] = dataForm($data, $error_class, $error_message_email);
+            } elseif (!filter_var($data, FILTER_VALIDATE_EMAIL)) {
+                    $form_validate[$key] = dataForm($data, $error_class, $error_message_not_email);
+                } else {
+                    $form_validate[$key] = dataForm($data);
+                }
+            break;
         case 'category':
             if ($data == 'Выберите категорию') {
                 $form_validate[$key] = dataForm($data, $error_class, $error_message);
