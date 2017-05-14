@@ -99,6 +99,20 @@ function dataForm($data = '', $error_class = '', $error_message = '') {
     ];
 }
 
+// Функция для поиска юзера
+function searchUser($email, $users) {
+    $result = null;
+
+    foreach ($users as $user) {
+        if ($user['email'] == $email) {
+            $result = $user;
+            break;
+        }
+    }
+
+    return $result;
+}
+
 // Функция форматирования времени
 // $time_input - время в формате временной метки
 // 1. Если переданное дата/время старше 24 часов от текущего времени, то вернуть дату/время в формате «дд.мм.гг в чч.мм».

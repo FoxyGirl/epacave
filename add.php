@@ -8,6 +8,13 @@
 require_once 'functions.php';
 require_once 'data.php';
 
+session_start();
+
+if ( !$_SESSION['user'] ) {
+    header("HTTP/1.1 403 Forbidden");
+    exit('ERROR 403 Forbidden');
+}
+
 $form_valid = '';
 $form_validate = [];
 $form_validate['file_error'] = '';
@@ -56,6 +63,8 @@ if ($form_data['form_valid'] == '') {
     ];
 }
 
+$page_title = 'Добавление лота';
+
 $lot_data = [
     'bets' => $bets,
     'id_lot' => 6,
@@ -63,24 +72,11 @@ $lot_data = [
     'categories' => $categories
 ];
 
-?>
 
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Добавление лота</title>
-    <link href="css/normalize.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-</head>
-<body>
+//<!-- Header -->
+echo includeTemplate('tmpl-header.php', ['page_title' => $page_title]);
 
-<!-- Header -->
-<?=includeTemplate('tmpl-header.php', []); ?>
-<!--  -->
-
-<!-- Main -->
-<?php
+//<!-- Main -->
     if (empty($_POST) || $form_data['form_valid'] == 'form--invalid') {
         echo includeTemplate('tmpl-main-add-lot.php', $form_data);
 //        print('Форма неверна ' . $form_data['form_valid']);
@@ -89,13 +85,6 @@ $lot_data = [
         echo includeTemplate('tmpl-main-lot.php', $lot_data);
 //        print('Вот ваш лот ' . $form_data['form_valid']);
     }
-?>
 
-<!--  -->
-
-<!-- Footer -->
-<?=includeTemplate('tmpl-footer.php', $footer_data); ?>
-<!--  -->
-
-</body>
-</html>
+//<!-- Footer -->
+echo includeTemplate('tmpl-footer.php', $footer_data);

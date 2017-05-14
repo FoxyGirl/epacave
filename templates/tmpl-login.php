@@ -15,7 +15,7 @@
             <label for="password">Пароль*</label>
             <input id="password" type="password" name="password" placeholder="Введите пароль"
                    value="<?= $form_validate['password']['value']?>">
-            <span class="form__error">Введите пароль</span>
+            <span class="form__error"><?= $form_validate['password']['error_message'] ?></span>
         </div>
         <button type="submit" class="button">Войти</button>
     </form>
