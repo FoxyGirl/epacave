@@ -1,26 +1,7 @@
 <main>
-    <nav class="nav">
-        <ul class="nav__list container">
-            <li class="nav__item">
-                <a href="">Доски и лыжи</a>
-            </li>
-            <li class="nav__item">
-                <a href="">Крепления</a>
-            </li>
-            <li class="nav__item">
-                <a href="">Ботинки</a>
-            </li>
-            <li class="nav__item">
-                <a href="">Одежда</a>
-            </li>
-            <li class="nav__item">
-                <a href="">Инструменты</a>
-            </li>
-            <li class="nav__item">
-                <a href="">Разное</a>
-            </li>
-        </ul>
-    </nav>
+    <!-- Navigation -->
+    <?= includeTemplate('tmpl-nav.php', ['categories' => $categories]); ?>
+    <!--  -->
     <section class="lot-item container">
         <h2><?= $lots[$id_lot]['name'] ?></h2>
         <div class="lot-item__content">
@@ -41,6 +22,7 @@
                     равнодушным.</p>
             </div>
             <div class="lot-item__right">
+                <?php if ($_SESSION['user']): ?>
                 <div class="lot-item__state">
                     <div class="lot-item__timer timer">
                         10:54:12
@@ -62,6 +44,7 @@
                         <button type="submit" class="button">Сделать ставку</button>
                     </form>
                 </div>
+                <?php endif; ?>
                 <div class="history">
                     <h3>История ставок (<span>4</span>)</h3>
                     <!-- заполните эту таблицу данными из массива $bets-->

@@ -8,15 +8,16 @@
 require_once 'functions.php';
 require_once 'data.php';
 
+session_start();
+
+if ( !$_SESSION['user'] ) {
+    header("HTTP/1.1 403 Forbidden");
+    exit('ERROR 403 Forbidden');
+}
+
 $form_valid = '';
 $form_validate = [];
 $form_validate['file_error'] = '';
-
-$upload_img_file_types = [
-    'image/jpeg',
-    'image/jpg',
-    'image/png'
-];
 
 if (isset($_POST)) {
     array_walk($_POST, 'check_input');
@@ -45,76 +46,12 @@ if (isset($_FILES['photo2']) && $_FILES['photo2']['name'] != '') {
     } else {
         $form_validate['file_error'] = 'Код ошибки загрузки файла ' . $file['error'];
     }
-
-
-}
-
-function check_input(&$data, $key) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-//    print($key . ' ' . $data . '<br>');
-}
-
-function check_form(&$data, $key)
-{
-//    global $form_validate;
-    $error_class = 'form__item--invalid';
-    $error_message = 'Заполните это поле';
-    $error_message_num = 'Заполните это поле числом больше нуля';
-
-    switch ($key) {
-        case 'category':
-            if ($data == 'Выберите категорию') {
-                dataError($data, $key, $error_class, $error_message);
-            } else {
-                dataRight($data, $key);
-            }
-            break;
-        case 'lot-rate':
-        case 'lot-step':
-            if (!is_numeric($data) || +$data <= 0) {
-                $data = '';
-                dataError($data, $key, $error_class, $error_message_num);
-            } else {
-                dataRight($data, $key);
-            }
-            break;
-        default:
-            if (empty($data)) {
-                dataError($data, $key, $error_class, $error_message);
-            } else {
-                dataRight($data, $key);
-            }
-    }
-
-//    print($key . ' ' . $form_validate[$key]['value'] . ' /  ' . $form_validate[$key]['error_class'] . ' /  ' . $form_validate[$key]['error_message'] . '<br>');
-}
-
-
-function dataRight($data = '', $key) {
-    global $form_validate;
-    $form_validate[$key] = [
-        'value' => $data,
-        'error_class' => '',
-        'error_message' => ''
-    ];
-}
-
-function dataError($data = '', $key, $error_class, $error_message) {
-    global $form_validate, $form_valid;
-    $form_valid = 'form--invalid';
-    $form_validate[$key] = [
-        'value' => $data,
-        'error_class' => $error_class,
-        'error_message' => $error_message
-    ];
 }
 
 $form_data = [
     'form_valid' => $form_valid,
     'form_validate' => $form_validate,
-    'equipment_types' => $equipment_types
+    'categories' => $categories
 ];
 
 if ($form_data['form_valid'] == '') {
@@ -126,30 +63,20 @@ if ($form_data['form_valid'] == '') {
     ];
 }
 
+$page_title = 'Добавление лота';
+
 $lot_data = [
     'bets' => $bets,
     'id_lot' => 6,
-    'lots' => $lots
+    'lots' => $lots,
+    'categories' => $categories
 ];
 
-?>
 
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Добавление лота</title>
-    <link href="css/normalize.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-</head>
-<body>
+//<!-- Header -->
+echo includeTemplate('tmpl-header.php', ['page_title' => $page_title]);
 
-<!-- Header -->
-<?=includeTemplate('tmpl-header.php', []); ?>
-<!--  -->
-
-<!-- Main -->
-<?php
+//<!-- Main -->
     if (empty($_POST) || $form_data['form_valid'] == 'form--invalid') {
         echo includeTemplate('tmpl-main-add-lot.php', $form_data);
 //        print('Форма неверна ' . $form_data['form_valid']);
@@ -158,13 +85,6 @@ $lot_data = [
         echo includeTemplate('tmpl-main-lot.php', $lot_data);
 //        print('Вот ваш лот ' . $form_data['form_valid']);
     }
-?>
 
-<!--  -->
-
-<!-- Footer -->
-<?=includeTemplate('tmpl-footer.php', $footer_data); ?>
-<!--  -->
-
-</body>
-</html>
+//<!-- Footer -->
+echo includeTemplate('tmpl-footer.php', $footer_data);

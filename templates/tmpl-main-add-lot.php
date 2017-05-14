@@ -1,26 +1,7 @@
 <main>
-    <nav class="nav">
-        <ul class="nav__list container">
-            <li class="nav__item">
-                <a href="all-lots.html">Доски и лыжи</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Крепления</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Ботинки</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Одежда</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Инструменты</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Разное</a>
-            </li>
-        </ul>
-    </nav>
+    <!-- Navigation -->
+    <?= includeTemplate('tmpl-nav.php', ['categories' => $categories]); ?>
+    <!--  -->
     <form class="form form--add-lot container <?= $form_validate['form_valid'] ?>"
           action="add.php" method="post" enctype="multipart/form-data" name="add_form"> <!-- form--invalid -->
         <h2>Добавление лота</h2>
@@ -36,7 +17,7 @@
                 <select id="category" name="category" >
                     <option  <?php if ($form_validate['category']['value'] == 'Выберите категорию')
                     {print('selected');}?> >Выберите категорию</option>
-                    <?php foreach($equipment_types as $item): ?>
+                    <?php foreach($categories as $item): ?>
                         <option <?php if ($form_validate['category']['value'] == $item)
                         {print('selected');}?> > <?= $item ?></option>
                     <?php endforeach; ?>

@@ -1,6 +1,8 @@
-﻿<?php
+<?php
 require_once 'functions.php';
 require_once 'data.php';
+
+session_start();
 
 // устанавливаем часовой пояс в Московское время
 date_default_timezone_set('Europe/Moscow');
@@ -17,35 +19,19 @@ $now = time();
 // далее нужно вычислить оставшееся время до начала следующих суток и записать его в переменную $lot_time_remaining
 $lot_time_remaining = gmdate("H:i", ($tomorrow - $now));
 
-
+$page_title = 'Главная';
 
 $main_data = [
-    'equipment_types' =>  $equipment_types,
+    'categories' =>  $categories,
     'lots' => $lots,
     'lot_time_remaining' => $lot_time_remaining
 ];
-?>
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Главная</title>
-    <link href="css/normalize.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-</head>
-<body>
 
-<!-- Header -->
-<?=includeTemplate('tmpl-header.php', []); ?>
-<!--  -->
+//<!-- Header -->
+echo includeTemplate('tmpl-header.php', ['page_title' => $page_title]);
 
-<!-- Main -->
-<?=includeTemplate('tmpl-main.php', $main_data); ?>
-<!--  -->
+//<!-- Main -->
+echo includeTemplate('tmpl-main.php', $main_data);
 
-<!-- Footer -->
-    <?=includeTemplate('tmpl-footer.php', $footer_data); ?>
-<!--  -->
-
-</body>
-</html>
+//<!-- Footer -->
+echo includeTemplate('tmpl-footer.php', $footer_data);
