@@ -22,7 +22,7 @@
                     равнодушным.</p>
             </div>
             <div class="lot-item__right">
-                <?php if ($_SESSION['user']): ?>
+                <?php if ($_SESSION['user'] && !check_lot($id_lot)): ?>
                 <div class="lot-item__state">
                     <div class="lot-item__timer timer">
                         10:54:12
@@ -36,10 +36,12 @@
                             Мин. ставка <span>12 000 р</span>
                         </div>
                     </div>
-                    <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post">
-                        <p class="lot-item__form-item">
+                    <form class="lot-item__form <?= $form_validate['form_valid'] ?>" action="lot.php?id=<?= $id_lot?>" method="post">
+                        <p class="lot-item__form-item  <?= $form_validate['cost']['error_class'] ?>">
                             <label for="cost">Ваша ставка</label>
-                            <input id="cost" type="number" name="cost" placeholder="12 000">
+                            <input id="cost" type="number" name="cost"
+                                   placeholder="<?= ($form_validate['cost']['value']) ? $form_validate['cost']['value'] : '12000' ?>">
+                            <span class="form__error"><?= $form_validate['cost']['error_message'] ?></span>
                         </p>
                         <button type="submit" class="button">Сделать ставку</button>
                     </form>
