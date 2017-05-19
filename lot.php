@@ -14,13 +14,46 @@ if ( !$is_id_valid ) {
 
 $page_title = $lots[$id_lot]['name'];
 
+$form_valid = '';
+$form_validate = [];
+$form_validate['file_error'] = '';
+
+if (!empty($_POST)) {
+    array_walk($_POST, 'check_input');
+    array_walk($_POST, 'check_form');
+
+    if ($form_valid == '') {
+        save_bets($id_lot, $_POST['cost']);
+        header('Location: /mylots.php', true,307);
+        exit();
+    }
+}
+
+//setcookie('my_bets', json_encode($cook_lot), strtotime("-2 days"), "/");
+
 $main_data = [
     'bets' => $bets,
     'id_lot' => $id_lot,
     'lots' => $lots,
+    'form_valid' => $form_valid,
+    'form_validate' => $form_validate,
     'categories' => $categories
 ];
 
+/**
+ * @param $name | string - Name of cookie
+ * @param $value | array - New array for adding to cookie
+ * @return array|mixed|string
+ */
+function updateCookie($name, $value) {
+    $result = '';
+    if (isset($_COOKIE[$name])) {
+        $result = json_decode($_COOKIE[$name]);
+        $result[] = [$value];
+    }
+    $result = json_encode($result);
+    return $result;
+}
 
 //<!-- Header -->
 echo includeTemplate('tmpl-header.php', ['id_lot' => $id_lot, 'lots' => $lots, 'page_title' => $page_title]);

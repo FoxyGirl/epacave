@@ -48,6 +48,7 @@ function check_form(&$data, $key)
     $error_message_email = 'Введите e-mail';
     $error_message_not_email = 'Введите правильный e-mail';
     $error_message_num = 'Заполните это поле числом больше нуля';
+    $error_message_bet = 'Минимальная ставка 12000';
 
     switch ($key) {
         case 'email':
@@ -71,6 +72,14 @@ function check_form(&$data, $key)
             if (!is_numeric($data) || +$data <= 0) {
                 $data = '';
                 $form_validate[$key] = dataForm($data, $error_class, $error_message_num);
+            } else {
+                $form_validate[$key] = dataForm($data);
+            }
+            break;
+        case 'cost':
+            if (!is_numeric($data) || +$data < 12000) {
+                $data = '';
+                $form_validate[$key] = dataForm($data, $error_class, $error_message_bet);
             } else {
                 $form_validate[$key] = dataForm($data);
             }
@@ -159,5 +168,46 @@ function endings($num, $variants) {
         return $variants[2];
     }
 }
+
+/**
+ * @param $id_lot string lot id
+ * @param $bet string  bet for lot with id $id_lot
+ * Add new information about bet for lot into cookies
+ */
+function save_bets($id_lot, $bet) {
+    $cookie_name = 'my_bets';
+    $my_bets = [];
+    if (!empty($_COOKIE[$cookie_name])) {
+        $my_bets = json_decode($_COOKIE[$cookie_name], true);
+    }
+    $my_bets[$id_lot] = [
+        'bet' => $bet,
+        'time' => time()
+    ];
+//    $my_bets[] = [
+//        'id_lot' => $id_lot,
+//        'bet' => $bet,
+//        'time' => time()
+//    ];
+    setcookie($cookie_name, json_encode($my_bets), strtotime('+7 days'), "/");
+}
+
+/**
+ * @param $id_lot string lot id
+ * @return bool true if lot with $id_lot has my bet into cookie
+ */
+function check_lot($id_lot) {
+    $my_bets = json_decode($_COOKIE['my_bets'], true);
+    return array_key_exists($id_lot, $my_bets);
+}
+
+//function check_lot($id_lot) {
+//    $my_bets = json_decode($_COOKIE['my_bets'], true);
+//    print ($my_bets);
+//    foreach ($my_bets as $my_bet) {
+//        if (array_key_exists($my_bet[$id_lot]));
+//        return true;
+//    }
+//}
 
 ?>
