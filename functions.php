@@ -170,8 +170,8 @@ function endings($num, $variants) {
 }
 
 /**
- * @param $id_lot string lot id
- * @param $bet string  bet for lot with id $id_lot
+ * @param $id_lot | string Lot id
+ * @param $bet | string Bet for lot with id $id_lot
  * Add new information about bet for lot into cookies
  */
 function save_bets($id_lot, $bet) {
@@ -184,11 +184,7 @@ function save_bets($id_lot, $bet) {
         'bet' => $bet,
         'time' => time()
     ];
-//    $my_bets[] = [
-//        'id_lot' => $id_lot,
-//        'bet' => $bet,
-//        'time' => time()
-//    ];
+
     setcookie($cookie_name, json_encode($my_bets), strtotime('+7 days'), "/");
 }
 
@@ -197,17 +193,13 @@ function save_bets($id_lot, $bet) {
  * @return bool true if lot with $id_lot has my bet into cookie
  */
 function check_lot($id_lot) {
-    $my_bets = json_decode($_COOKIE['my_bets'], true);
-    return array_key_exists($id_lot, $my_bets);
+    if (isset($_COOKIE['my_bets'])) {
+        $my_bets = json_decode($_COOKIE['my_bets'], true);
+        return array_key_exists($id_lot, $my_bets);
+    } else {
+        return false;
+    }
 }
 
-//function check_lot($id_lot) {
-//    $my_bets = json_decode($_COOKIE['my_bets'], true);
-//    print ($my_bets);
-//    foreach ($my_bets as $my_bet) {
-//        if (array_key_exists($my_bet[$id_lot]));
-//        return true;
-//    }
-//}
 
 ?>
